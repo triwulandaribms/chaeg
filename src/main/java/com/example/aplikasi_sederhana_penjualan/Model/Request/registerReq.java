@@ -1,6 +1,7 @@
 package com.example.aplikasi_sederhana_penjualan.Model.Request;
 
-public record UserReq(
+public record registerReq(
     String username,
-    String password
+    String password,
+    String email
 ) {}
