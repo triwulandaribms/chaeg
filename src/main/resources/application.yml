@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: aplikasi-sederhana-penjualan
+
+  datasource:
+    url: jdbc:mariadb://localhost:3306/db_penjualan
+    username: root
+    password: triwulandari3456
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
