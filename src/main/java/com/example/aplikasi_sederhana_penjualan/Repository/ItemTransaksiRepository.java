@@ -1,0 +1,10 @@
+package com.example.aplikasi_sederhana_penjualan.Repository;
+
+import com.example.aplikasi_sederhana_penjualan.Entity.ItemTransaksi;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface ItemTransaksiRepository extends JpaRepository<ItemTransaksi, Long> {
+    List<ItemTransaksi> findByTransaksiId(Long transaksiId);
+}

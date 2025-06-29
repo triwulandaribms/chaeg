@@ -1,5 +1,8 @@
 package com.example.aplikasi_sederhana_penjualan.Model.Request;
 
-public class TransaksiReq {
-    
-}
+import java.util.List;
+
+public record TransaksiReq(
+    Long userId,
+    List<ItemTransaksiReq> items
+) {}
