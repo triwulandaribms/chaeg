@@ -45,6 +45,17 @@ public class BukuController {
         }
     }
 
+    @PutMapping("/tambah-stok/{id}")
+    public ResponseEntity<?> tambahStok(@PathVariable Long id, @RequestBody Map<String, Integer> body) {
+        try {
+            int stok = body.get("stok");
+            Buku buku = bukuService.tambahStok(id, stok);
+            return ResponseEntity.ok(buku);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public void hapusBuku(@PathVariable Long id) {
         bukuService.deletedBuku(id);

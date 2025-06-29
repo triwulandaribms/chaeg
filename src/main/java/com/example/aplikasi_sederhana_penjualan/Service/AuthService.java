@@ -5,9 +5,8 @@ import com.example.aplikasi_sederhana_penjualan.Model.Request.loginReq;
 import com.example.aplikasi_sederhana_penjualan.Model.Request.registerReq;
 import com.example.aplikasi_sederhana_penjualan.Repository.UserRepository;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.crypto.SecretKey;
@@ -18,10 +17,12 @@ import java.util.Map;
 @Service
 public class AuthService {
 
+    @Autowired
+    private SecretKey secretKey;
+
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    private static final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION_TIME = 86400000;
 
     public AuthService(UserRepository userRepository) {
@@ -35,14 +36,14 @@ public class AuthService {
         for (User dataUser : userRepository.findAll()) {
             boolean cekEmail = req.email().equals(dataUser.getEmail());
             boolean cekPassword = passwordEncoder.matches(req.password(), dataUser.getPassword());
-    
+
             if (cekEmail && cekPassword) {
                 data.put("message", "Kombinasi email dan password sudah digunakan");
                 return data;
-            }else if (cekPassword) {
+            } else if (cekPassword) {
                 data.put("message", "Password sudah pernah digunakan oleh pengguna lain");
                 return data;
-            }else if (cekEmail) {
+            } else if (cekEmail) {
                 data.put("message", "Email sudah digunakan");
                 return data;
             }
@@ -67,7 +68,7 @@ public class AuthService {
                     .setSubject(user.getUsername())
                     .setIssuedAt(new Date())
                     .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                    .signWith(SECRET_KEY)
+                    .signWith(secretKey)
                     .compact();
 
             data.put("message", "Login berhasil");

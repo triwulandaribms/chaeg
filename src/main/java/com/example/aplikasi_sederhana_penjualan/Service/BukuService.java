@@ -51,6 +51,18 @@ public class BukuService {
         return bukuRepository.save(existing);
     }
 
+    public Buku tambahStok(Long id, int jumlahStok) {
+        Buku buku = bukuRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Buku dengan ID " + id + " tidak ditemukan."));
+    
+        if (jumlahStok <= 0) {
+            throw new RuntimeException("Jumlah stok yang ditambahkan harus lebih dari 0.");
+        }
+    
+        buku.setStok(buku.getStok() + jumlahStok);
+        return bukuRepository.save(buku);
+    }
+    
     public void deletedBuku(Long id) {
         bukuRepository.deleteById(id);
     }
